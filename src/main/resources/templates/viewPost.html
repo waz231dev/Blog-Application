@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View_Blog_Post</title>
+  <style>
+    .blog{
+    margin-top : 40px;
+    width :1000px;
+    margin: auto;
+
+    } <div th:each="tag : ${post.tags}">
+    <strong th:text="${tag.name}"></strong>
+  </div>
+    .grid{
+     display: grid;
+        grid-template-columns: repeat(10,1fr);
+        gap: 10px;
+
+    }
+    strong{
+    color: blue;
+    }
+  </style>
+</head>
+<body>
+<div class="blog">
+  <h2 th:text="${post.title}"></h2>
+  <hr>
+  <h4 th:text="${post.excerpt}"></h4>
+  <hr>
+  <div  class="grid">
+    <div th:each="tag : ${post.tags}">
+      <strong th:text="${tag.name}"></strong>
+    </div>
+  </div>
+  <hr>
+  <div th:utext="${post.content}"></div>
+</div>
+<hr>
+<div>
+  <h2>Comments:</h2>
+  <div th:each="com : ${post.commentList}">
+    <div>
+      <p>Name:<strong th:text="${com.name}"></strong></p>
+      <p>Email:<Strong th:text="${com.email}"></Strong></p>
+      <p th:text="${com.comment}"></p>
+    </div>
+    <br>
+  </div>
+  <form method="post" th:object="${comments}" th:action="@{/{postId}/comment(postId=${post.id})}">
+    <h4>Leave a comment</h4>
+    <input type="text" placeholder="Enter your Name" th:field="*{name}"><br>
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    <input type="email" placeholder="Enter your email" th:field="*{email}"><br>
+    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    <textarea placeholder="Enter comment" th:field="*{comment}"  rows="8" cols="20"></textarea><br>
+    <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></p>
+    <input type="submit" value="Submit">
+
+  </form>
+</div>
+</body>
+</html>

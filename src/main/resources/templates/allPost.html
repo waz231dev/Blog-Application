@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All View </title>
+    <style>
+
+        .box1 {
+            padding-left:10px;
+            border: 3px solid black;
+            width: 30vw;
+            height: auto;
+            margin: 10px;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+        }
+        .flex{
+        display:flex;
+        align-item:center;
+        justify-content:space-between;
+        }
+        input[type="text"]{
+         height:30px;
+         background-color:white;
+
+        }
+    </style>
+</head>
+<body>
+<div class="flex">
+    <h1>My Blog Post Application</h1>
+    <form th:action="@{/posts/search}">
+
+        <input type="text" name="query">
+        <span><input type="submit" value="Submit"></span>
+
+    </form>
+</div>
+<hr>
+
+<div class="main">
+    <div class="box1" th:each="post :${post}">
+        <h2 th:text="${post.title}"></h2>
+        <h5 th:text="${post.createdAt}"></h5>
+        <span th:utext="${post.excerpt}"></span>
+        <a th:href="@{/posts/{postId}/view(postId=${post.id})}">Read more</a>
+    </div>
+</div>
+</div>
+</body>
+</html>
