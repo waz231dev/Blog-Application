@@ -29,7 +29,7 @@ public class Tag {
     @Column(name = "name")
     String name;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     @CreationTimestamp
     Date createdAt;
 

@@ -54,9 +54,7 @@
     </form>
 </div>
 <hr>
-<form th:action="@{/post}">
-    <input type="submit" value="Create new post">
-</form>
+<a th:href="@{/post}" class="button-like">Create new post</a>
 
 <div class="main">
     <div class="box1" th:each="post :${post}">

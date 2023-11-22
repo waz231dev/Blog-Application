@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>View_Blog_Post</title>
   <style>
+    .comments{
+    margin-bottom:20px;
+    }
     .blog{
     margin-top : 40px;
     width :1000px;
@@ -62,7 +65,7 @@
     </div>
     <br>
   </div>
-  <form method="post" th:object="${comments}" th:action="@{/{postId}/comment(postId=${post.id})}">
+  <form class="comments" method="post" th:object="${comments}" th:action="@{/{postId}/comment(postId=${post.id})}">
     <h4>Leave a comment</h4>
     <input type="text" placeholder="Enter your Name" th:field="*{name}"><br>
     <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>

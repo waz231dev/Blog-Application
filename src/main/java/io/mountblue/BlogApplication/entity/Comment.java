@@ -27,14 +27,14 @@ public class Comment {
     String name;
 
     @NotEmpty(message = "email should not be empty")
-    @Column(name = "email",unique = true)
+    @Column(name = "email")
     String email;
 
     @NotEmpty(message = "comment should not be empty")
     @Column(name = "comment",columnDefinition = "TEXT")
     String comment;
 
-    @Column(name="created_at")
+    @Column(name="created_at",updatable = false)
     @CreationTimestamp
     Date createdAt;
 
