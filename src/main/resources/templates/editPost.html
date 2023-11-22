@@ -70,6 +70,7 @@
         <label for="message">Content :</label><br>
         <textarea rows="8" cols="20" id="message" th:field="*{content}" > </textarea>
         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+        <input type="text"  name="tagName" th:value="${tagValue}" ><br>
         <input type="submit" value="Submit">
     </form>
 </div>

@@ -2,6 +2,7 @@ package io.mountblue.BlogApplication.controller;
 
 import io.mountblue.BlogApplication.entity.Comment;
 import io.mountblue.BlogApplication.entity.Post;
+import io.mountblue.BlogApplication.entity.Tag;
 import io.mountblue.BlogApplication.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,15 @@ public class PostController {
         return "createPost";
     }
     @PostMapping("/savePost")
-    public String fillDataInDatabase( @Valid @ModelAttribute("post") Post post,
+    public String fillDataInDatabase(@RequestParam("tagName") String tagNames, @Valid @ModelAttribute("post") Post post,
                                      BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("post",post);
             return "createPost";
         }
         else{
-            postService.createPost(post);
+
+            postService.createPost(tagNames,post);
             return "redirect:/";
         }
     }
@@ -65,19 +67,31 @@ public class PostController {
     @GetMapping("/posts/{postId}/edit")
     public String editPost(@PathVariable("postId") int id,Model model){
         Post post = postService.findById(id);
-        model.addAttribute("post",post);
+       StringBuilder tagValueWithComma = new StringBuilder();
+
+       for(Tag tag :post.getTags()){
+           tagValueWithComma.append(tag.getName());
+           tagValueWithComma.append(",");
+       }
+     if(tagValueWithComma.length()>0) {
+         tagValueWithComma.deleteCharAt(tagValueWithComma.length() - 1);
+     }
+
+       model.addAttribute("tagValue",tagValueWithComma.toString());
+       model.addAttribute("post",post);
         return "editPost";
     }
+
     @PostMapping("/editPost/{postId}")
     public String saveChangesOfPost(@PathVariable("postId") int id,@Valid @ModelAttribute("post") Post post,
-                                    BindingResult result, Model model){
+                                    @RequestParam("tagName") String tagNames, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("post",post);
             return "editPost";
         }
         else{
-            post.setId(id);
-            postService.createPost(post);
+
+            postService.updatePost(id,tagNames,post);
             return "redirect:/posts/"+id+"/view";
         }
     }

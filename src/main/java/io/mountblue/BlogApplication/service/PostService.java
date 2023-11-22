@@ -1,7 +1,9 @@
 package io.mountblue.BlogApplication.service;
 
 import io.mountblue.BlogApplication.entity.Post;
+import io.mountblue.BlogApplication.entity.Tag;
 import io.mountblue.BlogApplication.repository.PostRepo;
+import io.mountblue.BlogApplication.repository.TagRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +14,30 @@ import java.util.Optional;
 public class PostService {
 
     private PostRepo postRepo;
-   @Autowired
-    public PostService(PostRepo postRepo) {
+    private TagRepo tagRepo;
+
+    public PostService(PostRepo postRepo, TagRepo tagRepo) {
         this.postRepo = postRepo;
+        this.tagRepo = tagRepo;
     }
 
-    public void createPost(Post post) {
-        postRepo.save(post);
+    public void createPost(String tagNames, Post post) {
+
+        String[] tagArray = tagNames.split(",");
+        for (String tagName : tagArray) {
+            tagName = tagName.trim();
+            Tag tag =tagRepo.findByName(tagName);
+            if(tag != null){
+                post.getTags().add(tag);
+            }
+            else{
+                Tag newTag = new Tag();
+                newTag.setName(tagName);
+                 tagRepo.save(newTag);
+                 post.getTags().add(newTag);
+            }
+        }
+       postRepo.save(post);
     }
 
     public List<Post> getAllPosts() {
@@ -27,11 +46,30 @@ public class PostService {
     }
 
     public void deletById(int id) {
-        postRepo.deleteById(id);
+
+       postRepo.deleteById(id);
     }
 
     public Post findById(int id) {
         Post post = postRepo.findById(id).get();
         return post;
+    }
+    public void updatePost(int postId,String tagNames,Post post){
+        String[] tagArray = tagNames.split(",");
+        for (String tagName : tagArray) {
+            tagName = tagName.trim();
+            Tag tag =tagRepo.findByName(tagName);
+            if(tag != null){
+                post.getTags().add(tag);
+            }
+            else{
+                Tag newTag = new Tag();
+                newTag.setName(tagName);
+                tagRepo.save(newTag);
+                post.getTags().add(newTag);
+            }
+        }
+        post.setId(postId);
+       postRepo.save(post);
     }
 }
