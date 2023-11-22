@@ -9,15 +9,16 @@
         .box1 {
             padding-left:10px;
             border: 3px solid black;
-            width: 30vw;
+<!--            width: 30vw;-->
             height: auto;
             margin: 10px;
         }
 
         .main {
             display: grid;
-            grid-template-columns: repeat(3,1fr);
+            grid-template-columns: repeat(2,1fr);
             gap: 10px;
+             margin-inline: 20px;
         }
         .flex{
         display:flex;
@@ -28,6 +29,17 @@
          height:30px;
          background-color:white;
 
+        }
+         .button-like {
+            display: inline-block;
+            padding: 5px 5px;
+            background-color: grey;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom : 10px;
+            margin-top : 10px;
         }
     </style>
 </head>
@@ -42,13 +54,16 @@
     </form>
 </div>
 <hr>
+<form th:action="@{/post}">
+    <input type="submit" value="Create new post">
+</form>
 
 <div class="main">
     <div class="box1" th:each="post :${post}">
         <h2 th:text="${post.title}"></h2>
-        <h5 th:text="${post.createdAt}"></h5>
-        <span th:utext="${post.excerpt}"></span>
-        <a th:href="@{/posts/{postId}/view(postId=${post.id})}">Read more</a>
+        <h5 th:text="${post.author+ ' '+post.createdAt}"></h5>
+        <span th:utext="${post.excerpt}"></span><br>
+        <a th:href="@{/posts/{postId}/view(postId=${post.id})}" class="button-like">Read more</a>
     </div>
 </div>
 </div>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit_Post </title>
+    <style>
+        *{
+        background-color: graytext;
+        font-family: 'Merriweather', serif;
+        }
+        h1{
+        background-color: black;
+        color:white;
+        width:100%;
+        text-align:center;
+        padding-top:20px;
+        padding-bottom: 20px;
+        }
+        form{
+        box-shadow: 10px 10px 5px black;
+        width: 50vw;
+        margin: auto;
+        margin-top: 120px;
+        background-color: white;
+        }
+        label{
+        background-color: white;
+        width:100%;
+        margin: 8px;
+        font-weight: bolder;
+        font-size: 20px;
+        }
+        input{
+        width:90%;
+        margin: 8px;
+        height: 35px;
+        background-color: white;
+        border: 1px solid black;
+        }
+        textarea{
+        border: 1px solid black;
+        width:90%;
+        margin: 8px;
+        background-color: white;
+        }
+        input[type="submit"]{
+        width: 30%;
+         background-color: black;
+          color:white;
+          height:35px;
+          font-size: 20px;
+          font-weight: bolder;
+          border: none;
+        }
+    </style>
+<body>
+
+<div>
+    <form th:action="@{/editPost/{postId}(postId=${post.id})}" method="post"  th:object="${post}">
+        <h1>Edit Post</h1>
+        <label for="user">Author :</label>
+        <input type="text" id="user" th:field="*{author}" ><br>
+        <p th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>
+        <label for="tit">Title :</label>
+        <input type="text" id="tit" th:field="*{title}" ><br>
+        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+        <label for="em">Excerpt :</label>
+        <input type="text" id="em" th:field="*{excerpt}"  ><br>
+        <p th:if="${#fields.hasErrors('excerpt')}" th:errors="*{excerpt}"></p>
+        <label for="message">Content :</label><br>
+        <textarea rows="8" cols="20" id="message" th:field="*{content}" > </textarea>
+        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+</body>
+</html>

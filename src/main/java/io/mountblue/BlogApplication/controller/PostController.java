@@ -56,5 +56,31 @@ public class PostController {
 
     }
 
+    @GetMapping("/posts/{postId}/delete")
+    public String deletePost(@PathVariable("postId") int id) {
+        postService.deletById(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/posts/{postId}/edit")
+    public String editPost(@PathVariable("postId") int id,Model model){
+        Post post = postService.findById(id);
+        model.addAttribute("post",post);
+        return "editPost";
+    }
+    @PostMapping("/editPost/{postId}")
+    public String saveChangesOfPost(@PathVariable("postId") int id,@Valid @ModelAttribute("post") Post post,
+                                    BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("post",post);
+            return "editPost";
+        }
+        else{
+            post.setId(id);
+            postService.createPost(post);
+            return "redirect:/";
+        }
+    }
+
 
 }

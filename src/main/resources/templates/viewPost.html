@@ -21,9 +21,23 @@
     strong{
     color: blue;
     }
+      .button-like {
+            display: inline-block;
+            padding: 5px 5px;
+            background-color: black;
+            color: white;
+            font-size:20px;
+            font-weight:bolder;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top : 10px;
+        }
   </style>
 </head>
 <body>
+<a th:href="@{/posts/{postId}/edit(postId=${post.id})}"  class="button-like">Edit</a>
+<a th:href="@{/posts/{postId}/delete(postId=${post.id})}"  class="button-like">Delete</a>
 <div class="blog">
   <h2 th:text="${post.title}"></h2>
   <hr>

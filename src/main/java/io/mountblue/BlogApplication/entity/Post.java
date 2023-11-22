@@ -42,13 +42,13 @@ public class Post {
     String content;
 
     @CreationTimestamp
-    @Column(name = "published_at")
+    @Column(name = "published_at",updatable = false)
     Date publishedAt;
 
     @Column(name = "is_published",columnDefinition = "BOOLEAN DEFAULT true")
     Boolean isPublished;
 
-    @Column(name="created_at")
+    @Column(name="created_at",updatable = false)
     @CreationTimestamp
     Date createdAt;
     @Column(name = "updated_at")
