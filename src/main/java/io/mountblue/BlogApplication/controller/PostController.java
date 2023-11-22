@@ -78,7 +78,7 @@ public class PostController {
         else{
             post.setId(id);
             postService.createPost(post);
-            return "redirect:/";
+            return "redirect:/posts/"+id+"/view";
         }
     }
 }

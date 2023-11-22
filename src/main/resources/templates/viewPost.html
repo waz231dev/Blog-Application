@@ -36,6 +36,18 @@
             cursor: pointer;
             margin-top : 10px;
         }
+    .button {
+            display: inline-block;
+            padding: 3px 3px;
+            background-color: black;
+            color: white;
+            font-size:15px;
+            font-weight:bold;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top : 5px;
+        }
   </style>
 </head>
 <body>
@@ -62,6 +74,8 @@
       <p>Name:<strong th:text="${com.name}"></strong></p>
       <p>Email:<Strong th:text="${com.email}"></Strong></p>
       <p th:text="${com.comment}"></p>
+      <a th:href="@{/comment/{postId}/{commentId}/edit(postId=${post.id},commentId=${com.id})}"  class="button">Edit</a>
+      <a th:href="@{/comment/{postId}/{commentId}/delete(postId=${post.id},commentId=${com.id})}"  class="button">Delete</a>
     </div>
     <br>
   </div>

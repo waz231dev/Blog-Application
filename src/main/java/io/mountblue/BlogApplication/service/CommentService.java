@@ -7,6 +7,8 @@ import io.mountblue.BlogApplication.repository.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CommentService {
 
@@ -23,4 +25,23 @@ public class CommentService {
         comment.setPost(post);
         commentRepo.save(comment);
     }
+    public void deleteComment(int commentId){
+        commentRepo.deleteById(commentId);
+    }
+    public  Comment findById(int commentId){
+       return commentRepo.findById(commentId).get();
+    }
+
+    public void updateComment(int postId,int commentId,Comment comment){
+        Post post = postRepo.findById(postId).get();
+        Comment oldComment = commentRepo.findById(commentId).get();
+        Comment newComment = new Comment();
+        newComment.setId(oldComment.getId());
+        newComment.setComment(comment.getComment());
+        newComment.setName(oldComment.getName());
+        newComment.setEmail(oldComment.getEmail());
+        newComment.setPost(post);
+        commentRepo.save(newComment);
+    }
+
 }

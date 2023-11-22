@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View_Blog_Post</title>
+    <style>
+        .comments{
+        margin-bottom:20px;
+        }
+        .blog{
+        margin-top : 40px;
+        width :1000px;
+        margin: auto;
+
+        } <div th:each="tag : ${post.tags}">
+        <strong th:text="${tag.name}"></strong>
+      </div>
+        .grid{
+         display: grid;
+            grid-template-columns: repeat(10,1fr);
+            gap: 10px;
+
+        }
+        strong{
+        color: blue;
+        }
+          .button-like {
+                display: inline-block;
+                padding: 5px 5px;
+                background-color: black;
+                color: white;
+                font-size:20px;
+                font-weight:bolder;
+                text-decoration: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top : 10px;
+            }
+        .button {
+                display: inline-block;
+                padding: 3px 3px;
+                background-color: black;
+                color: white;
+                font-size:15px;
+                font-weight:bold;
+                text-decoration: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top : 5px;
+            }
+    </style>
+</head>
+<body>
+<a th:href="@{/posts/{postId}/edit(postId=${post.id})}"  class="button-like">Edit</a>
+<a th:href="@{/posts/{postId}/delete(postId=${post.id})}"  class="button-like">Delete</a>
+<div class="blog">
+    <h2 th:text="${post.title}"></h2>
+    <hr>
+    <h4 th:text="${post.excerpt}"></h4>
+    <hr>
+    <div  class="grid">
+        <div th:each="tag : ${post.tags}">
+            <strong th:text="${tag.name}"></strong>
+        </div>
+    </div>
+    <hr>
+    <div th:utext="${post.content}"></div>
+</div>
+<hr>
+<div>
+    <h4>Edit comment:</h4>
+
+        <div>
+<!--            <p>Name:<strong th:text="${comments.name}"></strong></p>-->
+<!--            <p>Email:<Strong th:text="${comments.email}"></Strong></p>-->
+            <form th:action="@{/comment/{postId}/{commentId}(postId=${post.id},commentId=${comments.id})}" method="post" th:object="${comments}" >
+                <textarea placeholder="Enter comment" th:field="*{comment}"  rows="10" cols="40"></textarea><br>
+                <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></p>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
