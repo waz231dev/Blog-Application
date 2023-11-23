@@ -7,9 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -45,8 +43,8 @@ public class Post {
     @Column(name = "published_at",updatable = false)
     Date publishedAt;
 
-    @Column(name = "is_published",columnDefinition = "BOOLEAN DEFAULT true")
-    Boolean isPublished;
+    @Column(name = "is_published")
+    Boolean isPublished =true;
 
     @Column(name="created_at",updatable = false)
     @CreationTimestamp
@@ -63,6 +61,6 @@ public class Post {
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    List<Tag> tags = new ArrayList<>();
+    Set<Tag> tags = new HashSet<>();
 
 }

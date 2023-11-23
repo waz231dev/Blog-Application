@@ -3,9 +3,12 @@ package io.mountblue.BlogApplication.controller;
 import io.mountblue.BlogApplication.entity.Comment;
 import io.mountblue.BlogApplication.entity.Post;
 import io.mountblue.BlogApplication.entity.Tag;
+import io.mountblue.BlogApplication.repository.PostRepo;
 import io.mountblue.BlogApplication.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,8 @@ import java.util.List;
 public class PostController {
 
     PostService postService;
+    @Autowired
+    PostRepo postRepo;
     @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
@@ -107,6 +112,26 @@ public class PostController {
     public String searchByTitle(@RequestParam("query") String title,Model model){
         List<Post> posts = postService.searchByTitle(title);
         model.addAttribute("post",posts);
+        return "allPost";
+    }
+
+    @GetMapping("/posts")
+    public String listPosts(Model model, @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "4") int pageSize,
+                            @RequestParam(defaultValue = "author",required = false) String sortField,
+                            @RequestParam(defaultValue = "asc") String sortDir) {
+
+
+        Page<Post> postPage = postService.pagination(page, pageSize,sortField,sortDir);
+
+        model.addAttribute("post", postPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages",postPage.getTotalPages());
+        model.addAttribute("totalItems", postPage.getTotalElements());
+        //sort
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         return "allPost";
     }
 }

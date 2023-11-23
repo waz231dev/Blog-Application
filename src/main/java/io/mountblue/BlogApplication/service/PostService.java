@@ -5,6 +5,9 @@ import io.mountblue.BlogApplication.entity.Tag;
 import io.mountblue.BlogApplication.repository.PostRepo;
 import io.mountblue.BlogApplication.repository.TagRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +59,7 @@ public class PostService {
         return post;
     }
     public void updatePost(int postId,String tagNames,Post post){
+        post.getTags().clear();
         String[] tagArray = tagNames.split(",");
         for (String tagName : tagArray) {
             tagName = tagName.trim();
@@ -75,7 +79,7 @@ public class PostService {
     }
 
     public List<Post>  sortByTitle(){
-        List<Post> posts = postRepo.findAllByOrderByTitleAsc();
+        List<Post> posts = postRepo.findAllByOrderByTitleDesc();
         return posts;
     }
 
@@ -83,4 +87,18 @@ public class PostService {
         List<Post> posts = postRepo.searchPost(title);
         return  posts;
     }
+
+    public Page<Post> pagination(int page,int pageSize,String sortField,String sortDir){
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(page, pageSize,sort);
+        Page<Post> postPage = postRepo.findAll(pageable);
+
+        return postPage;
+
+    }
+
+
+
 }

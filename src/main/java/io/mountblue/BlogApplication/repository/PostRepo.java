@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PostRepo extends JpaRepository<Post,Integer> {
-    @Query("SELECT p from Post p WHERE " +
+    @Query(value = "SELECT p from Post p WHERE " +
             " p.title LIKE CONCAT('%', :query, '%') ")
 //            " p.excerpt LIKE CONCAT('%', :query, '%')")
     List<Post> searchPost(String query);
-    List<Post> findAllByOrderByTitleAsc();
+    List<Post> findAllByOrderByTitleDesc();
 }
