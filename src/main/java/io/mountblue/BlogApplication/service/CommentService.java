@@ -26,10 +26,12 @@ public class CommentService {
         commentRepo.save(comment);
     }
     public void deleteComment(int commentId){
+
         commentRepo.deleteById(commentId);
     }
     public  Comment findById(int commentId){
-       return commentRepo.findById(commentId).get();
+
+        return commentRepo.findById(commentId).get();
     }
 
     public void updateComment(int postId,int commentId,Comment comment){

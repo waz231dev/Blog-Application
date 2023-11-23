@@ -55,11 +55,13 @@
 </div>
 <hr>
 <a th:href="@{/post}" class="button-like">Create new post</a>
+<a th:href="@{/sortByTitle}" class="button-like">Sort By Title</a>
 
 <div class="main">
     <div class="box1" th:each="post :${post}">
         <h2 th:text="${post.title}"></h2>
         <h5 th:text="${post.author+ ' '+post.createdAt}"></h5>
+<!--        <h5 th:text="${#temporals.format(post.createdAt,'dd MMMM yyyy')}"></h5>-->
         <span th:utext="${post.excerpt}"></span><br>
         <a th:href="@{/posts/{postId}/view(postId=${post.id})}" class="button-like">Read more</a>
     </div>

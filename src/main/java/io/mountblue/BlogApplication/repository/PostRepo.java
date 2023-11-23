@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface PostRepo extends JpaRepository<Post,Integer> {
     @Query("SELECT p from Post p WHERE " +
-            " p.title LIKE CONCAT('%', :query, '%') OR " +
-            " p.excerpt LIKE CONCAT('%', :query, '%')")
+            " p.title LIKE CONCAT('%', :query, '%') ")
+//            " p.excerpt LIKE CONCAT('%', :query, '%')")
     List<Post> searchPost(String query);
+    List<Post> findAllByOrderByTitleAsc();
 }

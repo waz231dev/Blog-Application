@@ -8,7 +8,7 @@
         font-family: 'Merriweather', serif;
         }
         h1{
-        background-color: black;
+        background-color: grey;
         color:white;
         width:100%;
         text-align:center;
@@ -20,8 +20,8 @@
         margin: auto;
         margin-top: 50px;
         background-color: white;
-        margin-bottom: 50px;
-        border : 1px solid black
+        margin-bottom: 30px;
+
         }
         label{
         background-color: white;
@@ -71,8 +71,7 @@
         <textarea rows="8" cols="20" id="message" th:field="*{content}" > </textarea>
         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
         <label>Tags:</label>
-        <input type="text" placeholder="Enter a tags" name="tagName" ><br>
-        <!--        <input type="text" placeholder="Enter a tags"  th:field="${tagName}"><br>-->
+        <input type="text"  name="tagName" ><br>
         <input type="submit" value="Submit">
     </form>
 </div>

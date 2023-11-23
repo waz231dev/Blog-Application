@@ -54,10 +54,17 @@
 <a th:href="@{/posts/{postId}/edit(postId=${post.id})}"  class="button-like">Edit</a>
 <a th:href="@{/posts/{postId}/delete(postId=${post.id})}"  class="button-like">Delete</a>
 <div class="blog">
-  <h2 th:text="${post.title}"></h2>
+  <h2 style="text-align:center" th:text="${post.title}"></h2>
   <hr>
-  <h4 th:text="${post.excerpt}"></h4>
+
+  <div style="text-align:center"><strong th:text="${post.author}"></strong></div>
+  <div th:with="formattedDate=${#dates.format(post.createdAt, 'dd-MM-yyyy')}">
+    <!-- Display only the date -->
+    <div style="text-align:center"><strong th:text="${formattedDate}"></strong></div>
+  </div>
   <hr>
+<!--  <h5 th:text="${#temporals.format(post.createdAt,'dd MMMM yyyy')}"></h5>-->
+
   <div  class="grid">
     <div th:each="tag : ${post.tags}">
       <strong th:text="${tag.name}"></strong>

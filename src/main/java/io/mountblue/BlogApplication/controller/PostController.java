@@ -95,4 +95,18 @@ public class PostController {
             return "redirect:/posts/"+id+"/view";
         }
     }
+
+    @GetMapping("/sortByTitle")
+    public String sortByTitle(Model model){
+        List<Post> posts = postService.sortByTitle();
+        model.addAttribute("post",posts);
+        return "allPost";
+    }
+
+    @GetMapping("/posts/search")
+    public String searchByTitle(@RequestParam("query") String title,Model model){
+        List<Post> posts = postService.searchByTitle(title);
+        model.addAttribute("post",posts);
+        return "allPost";
+    }
 }

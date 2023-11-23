@@ -5,6 +5,7 @@ import io.mountblue.BlogApplication.entity.Tag;
 import io.mountblue.BlogApplication.repository.PostRepo;
 import io.mountblue.BlogApplication.repository.TagRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,5 +72,15 @@ public class PostService {
         }
         post.setId(postId);
        postRepo.save(post);
+    }
+
+    public List<Post>  sortByTitle(){
+        List<Post> posts = postRepo.findAllByOrderByTitleAsc();
+        return posts;
+    }
+
+    public List<Post>searchByTitle(String title) {
+        List<Post> posts = postRepo.searchPost(title);
+        return  posts;
     }
 }
