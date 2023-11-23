@@ -58,6 +58,13 @@
 <hr>
 <a th:href="@{/post}" class="button-like">Create new post</a>
 <a th:href="@{/sortByTitle}" class="button-like">Sort By Title</a>
+
+
+
+
+
+
+
 <form th:action="@{/posts}" method="get">
     <select name="sortField">
         <option value="publishedAt">Published_At</option>
@@ -71,6 +78,24 @@
     <input type="hidden" name="page" th:value="${currentPage}" />
     <input type="submit" value="Sort">
 </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div class="main">
     <div class="box1" th:each="post :${post}">

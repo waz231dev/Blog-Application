@@ -89,7 +89,8 @@ public class PostService {
     }
 
     public Page<Post> pagination(int page,int pageSize,String sortField,String sortDir){
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(page, pageSize,sort);
