@@ -92,6 +92,7 @@ public class PostController {
                                     @RequestParam("tagName") String tagNames, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("post",post);
+//            post.getTags();
             return "editPost";
         }
         else{

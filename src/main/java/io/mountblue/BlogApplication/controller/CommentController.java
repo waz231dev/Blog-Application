@@ -53,8 +53,10 @@ public class CommentController {
 
     }
     @PostMapping("/comment/{postId}/{commentId}")
-    public String editComment(@ModelAttribute("comments") Comment comment,@PathVariable("postId")int postId,
-                              @PathVariable("commentId") int commentId){
+    public String editComment(@Valid @ModelAttribute("comments") Comment comment,@PathVariable("postId")int postId,
+                              @PathVariable("commentId") int commentId,BindingResult result,Model model){
+        Post post = postService.findById(postId);
+
 
         commentService.updateComment(postId,commentId,comment);
         return "redirect:/posts/"+postId+"/view";

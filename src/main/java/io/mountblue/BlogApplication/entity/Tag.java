@@ -25,7 +25,7 @@ public class Tag {
     @Column(name = "id")
     int id;
 
-    @NotEmpty(message = "name should not be empty")
+
     @Column(name = "name")
     String name;
 
