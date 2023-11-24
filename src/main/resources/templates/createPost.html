@@ -71,7 +71,7 @@
         <textarea rows="8" cols="20" id="message" th:field="*{content}" > </textarea>
         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
         <label>Tags:</label>
-        <input type="text"  name="tagName" ><br>
+        <input type="text"  name="tagName"  th:value="${tag}"><br>
         <input type="submit" value="Submit">
     </form>
 </div>

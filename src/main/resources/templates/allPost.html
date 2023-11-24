@@ -49,7 +49,6 @@
 <div class="flex">
     <h1>My Blog Post Application</h1>
     <form th:action="@{/posts/search}">
-
         <input type="text" name="query">
         <span><input type="submit" value="Submit"></span>
 
@@ -57,10 +56,6 @@
 </div>
 <hr>
 <a th:href="@{/post}" class="button-like">Create new post</a>
-<a th:href="@{/sortByTitle}" class="button-like">Sort By Title</a>
-
-
-
 
 
 
@@ -111,6 +106,7 @@
 </div>
 
 <!--Pagination&-->
+<div th:if="${value==2}">
 <div th:if = "${totalPages > 1}">
     <nav aria-label="Page navigation example">
 
@@ -126,6 +122,24 @@
         </ul>
     </nav>
 </div>
+</div>
+<!----search and pagination--->
+<div th:if="${value==1}">
+<div th:if = "${totalPages > 1}">
+    <nav aria-label="Page navigation example">
 
+        <ul class="pagination">
+
+            <li  th:if="${currentPage != 0}" class="page-item"><a class="page-link" th:href="@{/posts/search(page=${currentPage-1},query=${param.query})}">Previous</a></li>
+
+            <li th:classappend="${currentPage==i-1?'active':''}" th:each="i :${#numbers.sequence(1,totalPages)}"
+                class="page-item"><a class="page-link" th:href="@{/posts/search(page=${i-1},query=${param.query})}"><span th:text="${i}"></span></a></li>
+
+
+            <li th:if="${currentPage+1 != totalPages}" class="page-item"><a class="page-link" th:href="@{/posts/search(page=${currentPage+1},query=${param.query})}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+</div>
 </body>
 </html>

@@ -78,15 +78,11 @@ public class PostService {
        postRepo.save(post);
     }
 
-    public List<Post>  sortByTitle(){
-        List<Post> posts = postRepo.findAllByOrderByTitleDesc();
-        return posts;
+
+    public Page<Post> searchByNameAndExcerpt(String query,Pageable pageable) {
+        return postRepo.searchPostByTagOrTitleOrAuthorOrContentOrExcerpt(query,pageable);
     }
 
-    public List<Post>searchByTitle(String title) {
-        List<Post> posts = postRepo.searchPost(title);
-        return  posts;
-    }
 
     public Page<Post> pagination(int page,int pageSize,String sortField,String sortDir){
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
