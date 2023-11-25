@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter</title>
+</head>
+<body>
+<a th:href="@{/posts}">Home Page</a>
+<form th:action="@{/posts/search}" method="get">
+    <!-- Filters by tags -->
+    <div style="margin-inline:30px;">
+        <h2><strong>Tags</strong></h2>
+        <select multiple="multiple" name="tag">
+            <option th:each="obj : ${tags}" th:value="${obj.name}" th:text="${obj.name}"></option>
+        </select>
+    </div>
+    <div >
+        <!-- Filters by author -->
+        <h2 ><strong>Author</strong></h2>
+        <select multiple="multiple" name="author">
+            <option th:each="obj : ${allAuthor}" th:value="${obj}" th:text="${obj}"></option>
+        </select>
+    </div>
+
+    <button  type="submit">Filter</button>
+</form>
+</body>
+</html>

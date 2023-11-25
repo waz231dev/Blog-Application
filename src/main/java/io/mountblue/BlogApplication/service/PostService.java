@@ -96,6 +96,22 @@ public class PostService {
 
     }
 
+    public Page<Post> fiterByTagsAndAuthor(List<String> tagList,List<String> authorList,Pageable pageable){
+        System.out.println(tagList);
+        System.out.println(authorList);
+        if(authorList.isEmpty())
+        {
+            authorList=null;
+
+        }
+        if(tagList.isEmpty()){
+            tagList=null;
+        }
+
+        return postRepo.findByTagNamesAndAuthors(tagList,authorList,pageable);
+
+    }
+
 
 
 }

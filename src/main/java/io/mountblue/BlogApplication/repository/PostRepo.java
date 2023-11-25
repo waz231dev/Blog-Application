@@ -21,7 +21,16 @@ public interface PostRepo extends JpaRepository<Post,Integer> {
             "t.name LIKE CONCAT('%', :query, '%')")
     Page<Post> searchPostByTagOrTitleOrAuthorOrContentOrExcerpt(@Param("query") String query,Pageable pageable);
 
-    List<Post> findAllByOrderByTitleDesc();
+    @Query("SELECT DISTINCT  p FROM Post p " +
+            "LEFT JOIN  p.tags t ON " +
+            "COALESCE(t.name, '') IN :tagNames "+
+            "WHERE (:tagNames IS NULL OR t.name IN (:tagNames)) " +
+            "AND (:authors IS NULL OR p.author IN (:authors))")
+    Page<Post> findByTagNamesAndAuthors(@Param("tagNames") List<String> tagNames, @Param("authors") List<String> authors,Pageable pageable);
+
+
+
+
 
 
 }

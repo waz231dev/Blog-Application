@@ -24,8 +24,14 @@
         }
         .flex{
         display:flex;
-        align-item:center;
+        align-items:center;
         justify-content:space-between;
+        }
+        .flex1{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
         }
         input[type="text"]{
          height:30px;
@@ -43,26 +49,29 @@
             margin-bottom : 10px;
             margin-top : 10px;
         }
+
+
     </style>
 </head>
 <body>
 <div class="flex">
     <h1>My Blog Post Application</h1>
+    <a th:href="@{/posts}">Home Page</a>
     <form th:action="@{/posts/search}">
         <input type="text" name="query">
         <span><input type="submit" value="Submit"></span>
-
     </form>
 </div>
 <hr>
+
+    <div class="flex1">
 <a th:href="@{/post}" class="button-like">Create new post</a>
 
-
-
-
-<form th:action="@{/posts}" method="get">
+<form style="margin-inline:30px;" th:action="@{/posts}" method="get">
     <select name="sortField">
         <option value="publishedAt">Published_At</option>
+        <option value="title">Title</option>
+        <option value="author">Author</option>
 
     </select>
 
@@ -74,23 +83,10 @@
     <input type="submit" value="Sort">
 </form>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<form action="/">
+    <input type="submit" value="Filter">
+</form>
+</div>
 
 <div class="main">
     <div class="box1" th:each="post :${post}">
@@ -100,6 +96,9 @@
 
             <div><strong th:text="${formattedDate}"></strong></div>
         </div></p>
+        <div th:each="tag : ${post.tags}">
+            <strong th:text="${tag.name}"></strong>
+        </div>
         <span th:utext="${post.excerpt}"></span><br>
         <a th:href="@{/posts/{postId}/view(postId=${post.id})}" class="button-like">Read more</a>
     </div>
@@ -124,22 +123,57 @@
 </div>
 </div>
 <!----search and pagination--->
+<!--<div th:if="${value==1}">-->
+<!--<div th:if = "${totalPages > 1}">-->
+<!--    <nav aria-label="Page navigation example">-->
+
+<!--        <ul class="pagination">-->
+
+<!--            <li  th:if="${currentPage != 0}" class="page-item"><a class="page-link" th:href="@{/posts/search(page=${currentPage-1},query=${param.query})}">Previous</a></li>-->
+
+<!--            <li th:classappend="${currentPage==i-1?'active':''}" th:each="i :${#numbers.sequence(1,totalPages)}"-->
+<!--                class="page-item"><a class="page-link" th:href="@{/posts/search(page=${i-1},query=${param.query})}"><span th:text="${i}"></span></a></li>-->
+
+
+<!--            <li th:if="${currentPage+1 != totalPages}" class="page-item"><a class="page-link" th:href="@{/posts/search(page=${currentPage+1},query=${param.query})}">Next</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
+<!--</div>-->
+
+
 <div th:if="${value==1}">
-<div th:if = "${totalPages > 1}">
-    <nav aria-label="Page navigation example">
+    <div th:if = "${totalPages > 1}">
+       <nav aria-label="Page navigation example">
 
-        <ul class="pagination">
+            <ul class="pagination">
 
-            <li  th:if="${currentPage != 0}" class="page-item"><a class="page-link" th:href="@{/posts/search(page=${currentPage-1},query=${param.query})}">Previous</a></li>
+                <li  th:if="${currentPage != 0}" class="page-item"><a class="page-link"
+                                                                      th:href="@{'/posts/search?page=' + ${currentPage-1} +'&author=' + ${author} + '&tag=' + ${tag} +'&query=' + ${query} }">Previous</a></li>
 
-            <li th:classappend="${currentPage==i-1?'active':''}" th:each="i :${#numbers.sequence(1,totalPages)}"
-                class="page-item"><a class="page-link" th:href="@{/posts/search(page=${i-1},query=${param.query})}"><span th:text="${i}"></span></a></li>
+    <           <li th:classappend="${currentPage==i-1?'active':''}" th:each="i :${#numbers.sequence(1,totalPages)}"
+                    class="page-item"><a class="page-link"
+                                         th:href="@{'/posts/search?page=' + ${i-1} +'&author=' + ${author} + '&tag=' + ${tag} +'&query=' + ${query} }"><span th:text="${i}"></span></a></li>
 
 
-            <li th:if="${currentPage+1 != totalPages}" class="page-item"><a class="page-link" th:href="@{/posts/search(page=${currentPage+1},query=${param.query})}">Next</a></li>
-        </ul>
-    </nav>
-</div>
-</div>
-</body>
-</html>
+                <li th:if="${currentPage+1 != totalPages}" class="page-item"><a class="page-link"
+                                                                                th:href="@{'/posts/search?page=' + ${currentPage+1} +'&author=' + ${author} + '&tag=' + ${tag} +'&query=' + ${query} }">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+    </html>
