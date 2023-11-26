@@ -1,6 +1,6 @@
-package io.mountblue.BlogApplication.repository;
+package io.mountblue.blogApplication.repository;
 
-import io.mountblue.BlogApplication.entity.Tag;
+import io.mountblue.blogApplication.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TagRepo extends JpaRepository<Tag,Integer> {

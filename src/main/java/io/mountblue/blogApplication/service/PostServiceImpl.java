@@ -1,10 +1,9 @@
-package io.mountblue.BlogApplication.service;
+package io.mountblue.blogApplication.service;
 
-import io.mountblue.BlogApplication.entity.Post;
-import io.mountblue.BlogApplication.entity.Tag;
-import io.mountblue.BlogApplication.repository.PostRepo;
-import io.mountblue.BlogApplication.repository.TagRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.mountblue.blogApplication.entity.Post;
+import io.mountblue.blogApplication.entity.Tag;
+import io.mountblue.blogApplication.repository.PostRepo;
+import io.mountblue.blogApplication.repository.TagRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,15 +11,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class PostService {
+public class PostServiceImpl implements  PostService{
 
     private PostRepo postRepo;
     private TagRepo tagRepo;
 
-    public PostService(PostRepo postRepo, TagRepo tagRepo) {
+    public PostServiceImpl(PostRepo postRepo, TagRepo tagRepo) {
         this.postRepo = postRepo;
         this.tagRepo = tagRepo;
     }
@@ -41,16 +39,17 @@ public class PostService {
                  post.getTags().add(newTag);
             }
         }
+
        postRepo.save(post);
     }
 
     public List<Post> getAllPosts() {
         List<Post> posts = postRepo.findAll();
+
         return posts;
     }
 
     public void deletById(int id) {
-
        postRepo.deleteById(id);
     }
 
@@ -79,12 +78,12 @@ public class PostService {
     }
 
 
-    public Page<Post> searchByNameAndExcerpt(String query,Pageable pageable) {
+    public Page<Post> searchByAuthorOrExcerptOrTitleOrContentOrTag(String query,Pageable pageable) {
         return postRepo.searchPostByTagOrTitleOrAuthorOrContentOrExcerpt(query,pageable);
     }
 
 
-    public Page<Post> pagination(int page,int pageSize,String sortField,String sortDir){
+    public Page<Post> paginationAndSorting(int page,int pageSize,String sortField,String sortDir){
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
@@ -93,7 +92,6 @@ public class PostService {
         Page<Post> postPage = postRepo.findAll(pageable);
 
         return postPage;
-
     }
 
     public Page<Post> fiterByTagsAndAuthor(List<String> tagList,List<String> authorList,Pageable pageable){
@@ -109,9 +107,6 @@ public class PostService {
         }
 
         return postRepo.findByTagNamesAndAuthors(tagList,authorList,pageable);
-
     }
-
-
 
 }

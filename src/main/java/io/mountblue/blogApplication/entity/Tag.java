@@ -1,7 +1,6 @@
-package io.mountblue.BlogApplication.entity;
+package io.mountblue.blogApplication.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;

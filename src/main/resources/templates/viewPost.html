@@ -4,66 +4,77 @@
   <meta charset="UTF-8">
   <title>View_Blog_Post</title>
   <style>
-    .comments{
-    margin-bottom:20px;
-    }
-    .blog{
-    margin-top : 40px;
-    width :1000px;
-    margin: auto;
+  .comments{
 
-    } <div th:each="tag : ${post.tags}">
-    <strong th:text="${tag.name}"></strong>
-  </div>
-    .grid{
-     display: grid;
-        grid-template-columns: repeat(10,1fr);
-        gap: 10px;
+  width:100%;
+  }
+  .comments>input,textarea{
+  width:100%;
+  padding:10px;
+}
+
+  .blog{
+  margin-top : 40px;
+  width :1000px;
+  margin: auto;
+
+  }
+  .grid{
+   display: grid;
+      grid-template-columns: repeat(10,1fr);
+      gap: 10px;
+
+  }
+  strong{
+  color: black;
+  display: inline-block;
+  }
+    .button-like {
+          display: inline-block;
+          padding: 5px 5px;
+          background-color: black;
+          color: white;
+          font-size:20px;
+          font-weight:bolder;
+          text-decoration: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top : 10px;
+      }
+  .button {
+          display: inline-block;
+          padding: 3px 3px;
+          background-color: black;
+          color: white;
+          font-size:15px;
+          font-weight:bold;
+          text-decoration: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top : 5px;
+      }
+    #submitbutton{
+     background:black;
+     color:white;
+      font-size:25px;
+      width:10%;
 
     }
-    strong{
-    color: blue;
-    }
-      .button-like {
-            display: inline-block;
-            padding: 5px 5px;
-            background-color: black;
-            color: white;
-            font-size:20px;
-            font-weight:bolder;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top : 10px;
-        }
-    .button {
-            display: inline-block;
-            padding: 3px 3px;
-            background-color: black;
-            color: white;
-            font-size:15px;
-            font-weight:bold;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top : 5px;
-        }
   </style>
 </head>
 <body>
 <a th:href="@{/posts/{postId}/edit(postId=${post.id})}"  class="button-like">Edit</a>
 <a th:href="@{/posts/{postId}/delete(postId=${post.id})}"  class="button-like">Delete</a>
+
 <div class="blog">
   <h2 style="text-align:center" th:text="${post.title}"></h2>
   <hr>
 
   <div style="text-align:center"><strong th:text="${post.author}"></strong></div>
   <div th:with="formattedDate=${#dates.format(post.createdAt, 'dd-MM-yyyy')}">
-    <!-- Display only the date -->
     <div style="text-align:center"><strong th:text="${formattedDate}"></strong></div>
   </div>
   <hr>
-
 
   <div  class="grid">
     <div th:each="tag : ${post.tags}">
@@ -87,14 +98,18 @@
     <br>
   </div>
   <form class="comments" method="post" th:object="${comments}" th:action="@{/{postId}/comment(postId=${post.id})}">
-    <h4>Leave a comment</h4>
+    <h2>Leave a comment :</h2>
     <input type="text" placeholder="Enter your Name" th:field="*{name}"><br>
     <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
     <input type="email" placeholder="Enter your email" th:field="*{email}"><br>
     <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
     <textarea placeholder="Enter comment" th:field="*{comment}"  rows="8" cols="20"></textarea><br>
     <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></p>
-    <input type="submit" value="Submit">
+
+
+    <input id="submitbutton" type="submit" value="Submit">
 
   </form>
 </div>

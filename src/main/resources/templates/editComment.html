@@ -73,9 +73,13 @@
         <div>
 <!--            <p>Name:<strong th:text="${comments.name}"></strong></p>-->
 <!--            <p>Email:<Strong th:text="${comments.email}"></Strong></p>-->
-            <form th:action="@{/comment/{postId}/{commentId}(postId=${post.id},commentId=${comments.id})}" method="post" th:object="${comments}" >
+            <form th:action="@{/comment/{postId}/{commentId}(postId=${post.id},commentId=${comments.id})}"
+                  method="post" th:object="${comments}" >
+
                 <textarea placeholder="Enter comment" th:field="*{comment}"  rows="10" cols="40"></textarea><br>
+
                 <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></p>
+
                 <input type="submit" value="Submit" required>
             </form>
         </div>

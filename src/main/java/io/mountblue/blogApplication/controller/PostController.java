@@ -1,11 +1,10 @@
-package io.mountblue.BlogApplication.controller;
+package io.mountblue.blogApplication.controller;
 
-import io.mountblue.BlogApplication.entity.Comment;
-import io.mountblue.BlogApplication.entity.Post;
-import io.mountblue.BlogApplication.entity.Tag;
-import io.mountblue.BlogApplication.repository.PostRepo;
-import io.mountblue.BlogApplication.repository.TagRepo;
-import io.mountblue.BlogApplication.service.PostService;
+import io.mountblue.blogApplication.entity.Comment;
+import io.mountblue.blogApplication.entity.Post;
+import io.mountblue.blogApplication.entity.Tag;
+import io.mountblue.blogApplication.repository.TagRepo;
+import io.mountblue.blogApplication.service.PostServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,57 +23,62 @@ import java.util.Set;
 @Controller
 public class PostController {
 
-    PostService postService;
-    @Autowired
+    PostServiceImpl postService;
     TagRepo tagRepo;
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostServiceImpl postService, TagRepo tagRepo) {
         this.postService = postService;
+        this.tagRepo = tagRepo;
     }
 
     @GetMapping("/post")
-    public String createPost(Model model){
-        model.addAttribute("post",new Post());
+    public String newPost(Model model){
 
+        model.addAttribute("post",new Post());
         return "createPost";
     }
+
     @PostMapping("/savePost")
-    public String fillDataOfCreatePost(@RequestParam("tagName") String tagNames, @Valid @ModelAttribute("post") Post post,
-                                     BindingResult result, Model model){
+    public String createPost(@RequestParam("tagName") String tagNames,
+                                       @Valid @ModelAttribute("post") Post post, BindingResult result, Model model) {
         if(result.hasErrors()){
             model.addAttribute("post",post);
             model.addAttribute("tag",tagNames);
             return "createPost";
         }
         else{
-
             postService.createPost(tagNames,post);
+
             return "redirect:/posts";
         }
     }
-    @GetMapping("/")
-    public String showAllPost(Model model){
+
+    @GetMapping("/filterPost")
+    public String searchByFilter(Model model){
         List<Post> allPosts = postService.getAllPosts();
-        model.addAttribute("post",allPosts);
-        List<Tag> all = tagRepo.findAll();
+
+        List<Tag> allTags = tagRepo.findAll();
         Set<String> author= new HashSet<>();
         for(Post post : allPosts){
             author.add(post.getAuthor());
         }
 
+        model.addAttribute("post",allPosts);
         model.addAttribute("allAuthor",author);
-        model.addAttribute("tags",all);
-      return "filter";
+        model.addAttribute("tags",allTags);
+
+        return "filter";
     }
 
     @GetMapping("/posts/{postId}/view")
     public String viewPost(@PathVariable("postId") int id, Model model){
         Post post = postService.findById(id);
         Comment comment = new Comment();
+
         model.addAttribute("post",post);
         model.addAttribute("comments",comment);
-        return "viewPost";
 
+        return "viewPost";
     }
 
     @GetMapping("/posts/{postId}/delete")
@@ -115,14 +119,14 @@ public class PostController {
 
 
     @GetMapping("/posts/search")
-    public String searchPost(
+    public String searchPostWithPagination(
             @RequestParam(value = "query",required = false) String query,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size,
             @RequestParam(name="tag",required = false)List<String> tagList,
             @RequestParam(name = "author",required = false)List<String> authorList,
             Model model) {
-        System.out.println("JHJHIHOIJOV vuygol");
+
         if(tagList == null){
             tagList= Collections.emptyList();
         }
@@ -133,14 +137,13 @@ public class PostController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts;
         if(query!=null && !query.isEmpty()) {
-            System.out.println("in query not null");
-            posts = postService.searchByNameAndExcerpt(query, pageable);
+            posts = postService.searchByAuthorOrExcerptOrTitleOrContentOrTag(query, pageable);
         }
         else{
-            System.out.println("else condition");
             posts = postService.fiterByTagsAndAuthor(tagList,authorList,pageable);
             query="";
         }
+
         String authors=String.join("&author=",authorList);
         String tags = String.join("&tag=",tagList);
 
@@ -152,28 +155,25 @@ public class PostController {
         model.addAttribute("author",authors);
         model.addAttribute("query",query);
 
-
         return "allPost";
     }
 
     @GetMapping("/posts")
-    public String listPosts(Model model, @RequestParam(defaultValue = "0",required = false) int page,
+    public String paginationWithSorting(Model model, @RequestParam(defaultValue = "0",required = false) int page,
                             @RequestParam(defaultValue = "4",required = false) int pageSize,
                             @RequestParam(defaultValue = "title",required = false) String sortField,
                             @RequestParam(defaultValue = "asc",required = false) String sortDir)
                             {
-                                System.out.println("HELLOOJN ");
-            Page<Post> postPage = postService.pagination(page, pageSize, sortField, sortDir);
+
+            Page<Post> postPage = postService.paginationAndSorting(page, pageSize, sortField, sortDir);
 
             model.addAttribute("post", postPage);
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", postPage.getTotalPages());
             model.addAttribute("totalItems", postPage.getTotalElements());
-            //sort
             model.addAttribute("sortField", sortField);
             model.addAttribute("sortDir", sortDir);
             model.addAttribute("value",2);
-
 
             return "allPost";
         }

@@ -1,6 +1,6 @@
-package io.mountblue.BlogApplication.repository;
+package io.mountblue.blogApplication.repository;
 
-import io.mountblue.BlogApplication.entity.Post;
+import io.mountblue.blogApplication.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

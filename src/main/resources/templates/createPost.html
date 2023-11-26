@@ -58,20 +58,26 @@
 <div>
     <form th:action="@{/savePost}" method="post"  th:object="${post}">
         <h1>Create Blog</h1>
+
         <label for="user">Author :</label>
         <input type="text" id="user" th:field="*{author}" ><br>
         <p th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>
+
         <label for="tit">Title :</label>
         <input type="text" id="tit" th:field="*{title}" ><br>
         <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+
         <label for="em">Excerpt :</label>
         <input type="text" id="em" th:field="*{excerpt}"  ><br>
         <p th:if="${#fields.hasErrors('excerpt')}" th:errors="*{excerpt}"></p>
+
         <label for="message">Content :</label><br>
         <textarea rows="8" cols="20" id="message" th:field="*{content}" > </textarea>
         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+
         <label>Tags:</label>
         <input type="text"  name="tagName"  th:value="${tag}"><br>
+
         <input type="submit" value="Submit">
     </form>
 </div>

@@ -59,19 +59,22 @@
 <div>
     <form th:action="@{/editPost/{postId}(postId=${post.id})}" method="post"  th:object="${post}">
         <h1>Edit Post</h1>
+
+
         <label for="user">Author :</label>
         <input type="text" id="user" th:field="*{author}" required ><br>
-<!--        <p th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>-->
+
         <label for="tit">Title :</label>
         <input type="text" id="tit" th:field="*{title}" required ><br>
-<!--        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>-->
+
         <label for="em">Excerpt :</label>
         <input type="text" id="em" th:field="*{excerpt}" required ><br>
-<!--        <p th:if="${#fields.hasErrors('excerpt')}" th:errors="*{excerpt}"></p>-->
+
         <label for="message">Content :</label><br>
         <textarea rows="8" cols="20" id="message" th:field="*{content}" required > </textarea>
-<!--        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>-->
+
         <input type="text"  name="tagName" th:value="${tagValue}" ><br>
+
         <input type="submit" value="Submit">
     </form>
 </div>

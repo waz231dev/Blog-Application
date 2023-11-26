@@ -1,9 +1,9 @@
-package io.mountblue.BlogApplication.controller;
+package io.mountblue.blogApplication.controller;
 
-import io.mountblue.BlogApplication.entity.Comment;
-import io.mountblue.BlogApplication.entity.Post;
-import io.mountblue.BlogApplication.service.CommentService;
-import io.mountblue.BlogApplication.service.PostService;
+import io.mountblue.blogApplication.entity.Comment;
+import io.mountblue.blogApplication.entity.Post;
+import io.mountblue.blogApplication.service.CommentServiceImpl;
+import io.mountblue.blogApplication.service.PostServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CommentController {
 
-    CommentService commentService;
-    PostService postService;
+    CommentServiceImpl commentService;
+    PostServiceImpl postService;
     @Autowired
-    public CommentController(CommentService commentService, PostService postService) {
+    public CommentController(CommentServiceImpl commentService, PostServiceImpl postService) {
         this.commentService = commentService;
         this.postService = postService;
     }
@@ -37,34 +37,36 @@ public class CommentController {
         }
         commentService.createComment(id,comment);
 
-        System.out.println("hello world");
-
         return "redirect:/posts/"+id+"/view";
     }
 
     @GetMapping("/comment/{postId}/{commentId}/edit")
-    public String editCommentForm(@PathVariable("postId")int postId, @PathVariable("commentId") int commentId,Model model){
+    public String editCommentForm(@PathVariable("postId")int postId, @PathVariable("commentId") int commentId,
+                                  Model model){
+
         Post post = postService.findById(postId);
         Comment comment = commentService.findById(commentId);
 
         model.addAttribute("post",post);
         model.addAttribute("comments",comment);
-        return "editComment";
 
+        return "editComment";
     }
+
     @PostMapping("/comment/{postId}/{commentId}")
     public String editComment( @ModelAttribute("comments") Comment comment,@PathVariable("postId")int postId,
                               @PathVariable("commentId") int commentId,Model model){
+
         Post post = postService.findById(postId);
-
-
         commentService.updateComment(postId,commentId,comment);
+
         return "redirect:/posts/"+postId+"/view";
 
     }
 
     @GetMapping("/comment/{postId}/{commentId}/delete")
     public String deleteComment(@PathVariable("commentId") int commentId,@PathVariable("postId") int postId){
+
         commentService.deleteComment(commentId);
         return "redirect:/posts/"+postId+"/view";
     }
