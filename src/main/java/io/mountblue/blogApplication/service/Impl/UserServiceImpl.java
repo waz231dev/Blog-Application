@@ -1,23 +1,25 @@
-package io.mountblue.blogApplication.service;
+package io.mountblue.blogApplication.service.Impl;
 
 import io.mountblue.blogApplication.entity.Role;
 import io.mountblue.blogApplication.entity.User;
 import io.mountblue.blogApplication.repository.RoleRepo;
 import io.mountblue.blogApplication.repository.UserRepo;
+import io.mountblue.blogApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     UserRepo userRepo;
-    @Autowired
+
     RoleRepo roleRepo;
     PasswordEncoder passwordEncoder;
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -41,7 +43,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findByUserName(String name) {
-      return   userRepo.findByUsername(name);
+
+        return   userRepo.findByUsername(name);
     }
 
 }

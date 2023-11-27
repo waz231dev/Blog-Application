@@ -60,6 +60,7 @@
     <span th:if="${#authorization.expression('isAuthenticated()')}">
     <span th:text="${#strings.toUpperCase(#authentication.principal.username)}"></span>
     </span>
+
     <span th:if="${#authorization.expression('isAuthenticated()')}">
 
     <form th:action = "@{/logout}" method="POST" >

@@ -66,7 +66,7 @@
 <body>
 <span th:if="${#authorization.expression('isAuthenticated()')}">
 <span th:if = "${#authentication.principal.username == post.author ||
-                #authorization.expression('hasRole(''ROLE_admin'')')}">
+                #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
 <a th:href="@{/posts/{postId}/edit(postId=${post.id})}"  class="button-like">Edit</a>
 <a th:href="@{/posts/{postId}/delete(postId=${post.id})}"  class="button-like">Delete</a>
 </span>
@@ -99,7 +99,7 @@
       <p th:text="${com.comment}"></p>
       <span th:if="${#authorization.expression('isAuthenticated()')}">
       <span th:if = "${#authentication.principal.username == post.author ||
-                #authorization.expression('hasRole(''ROLE_admin'')')}">
+                #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
       <a th:href="@{/comment/{postId}/{commentId}/edit(postId=${post.id},commentId=${com.id})}"  class="button">Edit</a>
       <a th:href="@{/comment/{postId}/{commentId}/delete(postId=${post.id},commentId=${com.id})}"  class="button">Delete</a>
       </span>

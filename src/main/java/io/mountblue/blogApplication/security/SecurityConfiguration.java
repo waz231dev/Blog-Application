@@ -46,14 +46,14 @@ public class SecurityConfiguration  {
                         configurer
                                 .requestMatchers("/signup","/saveUser","/posts").permitAll()
                                 .requestMatchers("/posts/search","/posts/{postId}/view","/filterPost").permitAll()
-                                .requestMatchers("/**").hasRole("AUTHOR")
+                                .requestMatchers("/**").hasAnyRole("AUTHOR","ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form->
                         form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
-                               .defaultSuccessUrl("/posts")
+                                .defaultSuccessUrl("/posts")
                                 .permitAll()
                 )
                 .logout(logout-> logout.permitAll()

@@ -1,11 +1,12 @@
-package io.mountblue.blogApplication.service;
+package io.mountblue.blogApplication.service.Impl;
 
 import io.mountblue.blogApplication.entity.Post;
 import io.mountblue.blogApplication.entity.Tag;
 import io.mountblue.blogApplication.entity.User;
 import io.mountblue.blogApplication.repository.PostRepo;
 import io.mountblue.blogApplication.repository.TagRepo;
-import io.mountblue.blogApplication.repository.UserRepo;
+import io.mountblue.blogApplication.service.PostService;
+import io.mountblue.blogApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,16 +19,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PostServiceImpl implements  PostService{
+public class PostServiceImpl implements PostService {
 
     private PostRepo postRepo;
     private TagRepo tagRepo;
-    @Autowired
-    UserService userService;
 
-    public PostServiceImpl(PostRepo postRepo, TagRepo tagRepo) {
+    UserService userService;
+    @Autowired
+    public PostServiceImpl(PostRepo postRepo, TagRepo tagRepo, UserService userService) {
         this.postRepo = postRepo;
         this.tagRepo = tagRepo;
+        this.userService = userService;
     }
 
     public void createPost(String tagNames, Post post) {
@@ -48,9 +50,7 @@ public class PostServiceImpl implements  PostService{
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
         User user = userService.findByUserName(username);
-
         post.setAuthor(username);
         post.setUser(user);
        postRepo.save(post);
@@ -86,6 +86,10 @@ public class PostServiceImpl implements  PostService{
                 post.getTags().add(newTag);
             }
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findByUserName(username);
+        post.setAuthor(username);
         post.setId(postId);
        postRepo.save(post);
     }

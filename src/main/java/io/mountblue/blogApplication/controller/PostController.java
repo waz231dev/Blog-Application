@@ -5,7 +5,6 @@ import io.mountblue.blogApplication.entity.Post;
 import io.mountblue.blogApplication.entity.Tag;
 import io.mountblue.blogApplication.repository.TagRepo;
 import io.mountblue.blogApplication.service.PostService;
-import io.mountblue.blogApplication.service.PostServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

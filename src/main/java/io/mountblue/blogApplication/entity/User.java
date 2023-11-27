@@ -33,7 +33,6 @@ public class User {
     @Column(name = "isactive")
     boolean isactive=true;
 
-
     @OneToMany(mappedBy = "user",cascade =CascadeType.ALL)
     List<Post> posts = new ArrayList<>();
 
