@@ -63,4 +63,8 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     Set<Tag> tags = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+
 }

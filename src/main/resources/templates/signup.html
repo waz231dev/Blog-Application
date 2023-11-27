@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUp Page</title>
+</head>
+<style>
+    *{
+
+    font-family: 'Merriweather', serif;
+    }
+    h1{
+
+    background-color: black;
+    color:white;
+    width:100%;
+    text-align:center;
+    padding-top:20px;
+    padding-bottom: 20px;
+
+
+    }
+
+    form{
+
+    width: 50vw;
+    margin: auto;
+    margin-top: 160px;
+    background-color: white;
+    }
+    label{
+    background-color: white;
+    width:100%;
+    margin: 8px;
+    font-weight: bolder;
+    font-size: 20px;
+    }
+    input{
+    width:90%;
+    margin: 8px;
+    height: 35px;
+    background-color: white;
+    border: 1px solid black;
+    }
+    textarea{
+    border: 1px solid black;
+    width:90%;
+    margin: 8px;
+    background-color: white;
+    }
+    input[type="submit"]{
+    width: 30%;
+     background-color: black;
+      color:white;
+      height:35px;
+      font-size: 20px;
+      font-weight: bolder;
+      border: none;
+    }
+
+
+
+</style>
+<body>
+
+<div>
+
+    <form th:action="@{/saveUser}" method="post" th:object="${user}">
+        <h1>SignUp Page</h1>
+        <label for="name1">Name:</label>
+        <input type="text" placeholder="Enter your name"  id="name1"  th:field="*{username}" ><br>
+        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+        <label for="email">Email :</label>
+        <input type="email" placeholder="Enter your email" id="email"  th:field="*{email}"  ><br>
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+        <label for="pass">Password :</label>
+        <input type="text" placeholder="Enter your name" id="pass"  th:field="*{password}" ><br>
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        <input type="submit" value="SignUp">
+
+    </form>
+
+</div>
+
+</body>
+</html>

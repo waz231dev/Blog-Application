@@ -57,7 +57,18 @@
 <body>
 <div class="flex">
     <h1>My Blog Post Application</h1>
+    <span th:if="${#authorization.expression('isAuthenticated()')}">
+    <span th:text="${#strings.toUpperCase(#authentication.principal.username)}"></span>
+    </span>
+    <span th:if="${#authorization.expression('isAuthenticated()')}">
+
+    <form th:action = "@{/logout}" method="POST" >
+        <button value="Logout" class = "logout-button">Logout</button>
+    </form>
+
+    </span>
     <a th:href="@{/posts}">Home Page</a>
+
     <form th:action="@{/posts/search}">
         <input type="text" name="query">
         <span><input type="submit" value="Submit"></span>
@@ -66,7 +77,16 @@
 <hr>
 
     <div class="flex1">
-<a th:href="@{/post}" class="button-like">Create new post</a>
+
+<!--        <span th:if = "${#authorization.expression('hasRole(''ROLE_AUTHOR'')') ||-->
+<!--                #authorization.expression('hasRole(''ROLE_ADMIN'')')}">-->
+
+
+        <span th:if="${#authorization.expression('isAuthenticated()')}">
+        <a th:href="@{/newpost}" class="button-like">Create new post</a>
+        </span>
+
+
 
 <form style="margin-inline:30px;" th:action="@{/posts}" method="get">
     <select name="sortField">

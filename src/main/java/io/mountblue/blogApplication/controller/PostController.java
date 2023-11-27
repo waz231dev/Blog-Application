@@ -4,12 +4,15 @@ import io.mountblue.blogApplication.entity.Comment;
 import io.mountblue.blogApplication.entity.Post;
 import io.mountblue.blogApplication.entity.Tag;
 import io.mountblue.blogApplication.repository.TagRepo;
+import io.mountblue.blogApplication.service.PostService;
 import io.mountblue.blogApplication.service.PostServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,18 +26,23 @@ import java.util.Set;
 @Controller
 public class PostController {
 
-    PostServiceImpl postService;
+    PostService postService;
     TagRepo tagRepo;
     @Autowired
-    public PostController(PostServiceImpl postService, TagRepo tagRepo) {
+    public PostController(PostService postService, TagRepo tagRepo) {
         this.postService = postService;
         this.tagRepo = tagRepo;
     }
 
-    @GetMapping("/post")
-    public String newPost(Model model){
 
-        model.addAttribute("post",new Post());
+
+    @GetMapping("/newpost")
+    public String newPost(Model model, @AuthenticationPrincipal UserDetails userDetails){
+        String username = userDetails.getUsername();
+        Post post = new Post();
+        post.setAuthor(username);
+
+        model.addAttribute("post",post);
         return "createPost";
     }
 
@@ -47,6 +55,7 @@ public class PostController {
             return "createPost";
         }
         else{
+
             postService.createPost(tagNames,post);
 
             return "redirect:/posts";

@@ -2,7 +2,9 @@ package io.mountblue.blogApplication.controller;
 
 import io.mountblue.blogApplication.entity.Comment;
 import io.mountblue.blogApplication.entity.Post;
+import io.mountblue.blogApplication.service.CommentService;
 import io.mountblue.blogApplication.service.CommentServiceImpl;
+import io.mountblue.blogApplication.service.PostService;
 import io.mountblue.blogApplication.service.PostServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CommentController {
 
-    CommentServiceImpl commentService;
-    PostServiceImpl postService;
+    CommentService commentService;
+    PostService postService;
     @Autowired
-    public CommentController(CommentServiceImpl commentService, PostServiceImpl postService) {
+    public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
         this.postService = postService;
     }

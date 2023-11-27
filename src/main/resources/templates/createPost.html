@@ -60,7 +60,8 @@
         <h1>Create Blog</h1>
 
         <label for="user">Author :</label>
-        <input type="text" id="user" th:field="*{author}" ><br>
+
+        <input type="text"  id="user" th:field="*{author}" ><br>
         <p th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>
 
         <label for="tit">Title :</label>

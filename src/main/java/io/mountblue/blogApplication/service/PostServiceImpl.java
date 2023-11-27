@@ -2,12 +2,17 @@ package io.mountblue.blogApplication.service;
 
 import io.mountblue.blogApplication.entity.Post;
 import io.mountblue.blogApplication.entity.Tag;
+import io.mountblue.blogApplication.entity.User;
 import io.mountblue.blogApplication.repository.PostRepo;
 import io.mountblue.blogApplication.repository.TagRepo;
+import io.mountblue.blogApplication.repository.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +22,8 @@ public class PostServiceImpl implements  PostService{
 
     private PostRepo postRepo;
     private TagRepo tagRepo;
+    @Autowired
+    UserService userService;
 
     public PostServiceImpl(PostRepo postRepo, TagRepo tagRepo) {
         this.postRepo = postRepo;
@@ -39,7 +46,13 @@ public class PostServiceImpl implements  PostService{
                  post.getTags().add(newTag);
             }
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
+        User user = userService.findByUserName(username);
+
+        post.setAuthor(username);
+        post.setUser(user);
        postRepo.save(post);
     }
 

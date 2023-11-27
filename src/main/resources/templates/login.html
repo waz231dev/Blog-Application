@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+</head>
+<style>
+    *{
+
+    font-family: 'Merriweather', serif;
+    }
+    h1{
+
+    background-color: black;
+    color:white;
+    width:100%;
+    text-align:center;
+    padding-top:20px;
+    padding-bottom: 20px;
+
+
+    }
+
+    form{
+
+    width: 50vw;
+    margin: auto;
+    margin-top: 160px;
+    background-color: white;
+    }
+    label{
+    background-color: white;
+    width:100%;
+    margin: 8px;
+    font-weight: bolder;
+    font-size: 20px;
+    }
+    input{
+    width:90%;
+    margin: 8px;
+    height: 35px;
+    background-color: white;
+    border: 1px solid black;
+    }
+    textarea{
+    border: 1px solid black;
+    width:90%;
+    margin: 8px;
+    background-color: white;
+    }
+    input[type="submit"]{
+    width: 30%;
+     background-color: black;
+      color:white;
+      height:35px;
+      font-size: 20px;
+      font-weight: bolder;
+      border: none;
+    }
+
+
+
+</style>
+<body>
+
+<div>
+
+    <form th:action="@{/authenticateTheUser}" method="post" th:object="${user}">
+        <div th:if="${param.error}">
+            <h1 style="color:red;">Sorry you added wrong credentials</h1>
+        </div>
+        <div th:if="${param.logout}">
+            <h1 style="color:red;">you are logout</h1>
+        </div>
+        <h1>Login Page</h1>
+
+        <label for="email">User_Name :</label>
+        <input type="text" placeholder="Enter your userName" id="email" name="username"  required><br>
+        <label for="pass">Password :</label>
+        <input type="password" placeholder="Enter your name" id="pass" name="password" required><br>
+
+        <input type="submit" value="Login">
+        <div>
+            <span>Not registered yet?
+
+
+                <a th:href="@{/signup}">Register</a>
+            </span>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

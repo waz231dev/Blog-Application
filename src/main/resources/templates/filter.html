@@ -41,7 +41,7 @@
     <!-- Filters by tags -->
     <div>
         <h2><strong>Tags</strong></h2>
-        <div th:each="obj : ${tags}">
+         <div th:each="obj : ${tags}">
             <input type="checkbox" name="tag" th:value="${obj.name}" th:id="${'tag_' + obj.name}" />
             <label th:for="${'tag_' + obj.name}" th:text="${obj.name}"></label><br/>
         </div>
