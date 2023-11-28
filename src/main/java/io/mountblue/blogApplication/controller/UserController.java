@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-    UserService userService;
+    private UserService userService;
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -21,6 +21,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginPage(){
+
         return "login";
     }
     @GetMapping("/access-denied")

@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService {
 
-    private PostRepo postRepo;
+     private PostRepo postRepo;
     private TagRepo tagRepo;
 
     UserService userService;
@@ -62,15 +62,15 @@ public class PostServiceImpl implements PostService {
         return posts;
     }
 
-    public void deletById(int id) {
+    public void deletById(Integer id) {
        postRepo.deleteById(id);
     }
 
-    public Post findById(int id) {
+    public Post findById(Integer id) {
         Post post = postRepo.findById(id).get();
         return post;
     }
-    public void updatePost(int postId,String tagNames,Post post){
+    public void updatePost(Integer postId,String tagNames,Post post){
         post.getTags().clear();
         String[] tagArray = tagNames.split(",");
         for (String tagName : tagArray) {
@@ -88,8 +88,11 @@ public class PostServiceImpl implements PostService {
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        System.out.println(username);
         User user = userService.findByUserName(username);
+
         post.setAuthor(username);
+        post.setUser(user);
         post.setId(postId);
        postRepo.save(post);
     }
@@ -100,7 +103,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    public Page<Post> paginationAndSorting(int page,int pageSize,String sortField,String sortDir){
+    public Page<Post> paginationAndSorting(Integer page,Integer pageSize,String sortField,String sortDir){
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();

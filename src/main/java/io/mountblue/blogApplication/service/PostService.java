@@ -12,15 +12,15 @@ public interface PostService {
 
     public List<Post> getAllPosts();
 
-    public void deletById(int id);
+    public void deletById(Integer id);
 
-    public Post findById(int id);
+    public Post findById(Integer id);
 
-    public void updatePost(int postId,String tagNames,Post post);
+    public void updatePost(Integer postId,String tagNames,Post post);
 
     public Page<Post> searchByAuthorOrExcerptOrTitleOrContentOrTag(String query, Pageable pageable);
 
-    public Page<Post> paginationAndSorting(int page,int pageSize,String sortField,String sortDir);
+    public Page<Post> paginationAndSorting(Integer page,Integer pageSize,String sortField,String sortDir);
 
     public Page<Post> fiterByTagsAndAuthor(List<String> tagList,List<String> authorList,Pageable pageable);
 

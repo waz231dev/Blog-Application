@@ -1,5 +1,6 @@
 package io.mountblue.blogApplication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -21,7 +22,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    Integer id;
     @NotEmpty(message = "name should not be empty")
     @Column(name = "name")
     String name;
@@ -42,6 +43,7 @@ public class Comment {
     @UpdateTimestamp
     Date updatedAt;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "postId",nullable = false)
     Post post;

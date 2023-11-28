@@ -1,5 +1,6 @@
 package io.mountblue.blogApplication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -21,7 +22,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "author")
     @NotEmpty(message = "author name should not be empty")
@@ -53,9 +54,11 @@ public class Post {
     @UpdateTimestamp
     Date updatedAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
     List<Comment> commentList = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "post_tags",
@@ -63,6 +66,7 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     Set<Tag> tags = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;

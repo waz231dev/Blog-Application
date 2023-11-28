@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +26,8 @@ import java.util.Set;
 @Controller
 public class PostController {
 
-    PostService postService;
-    TagRepo tagRepo;
+    private PostService postService;
+    private TagRepo tagRepo;
     @Autowired
     public PostController(PostService postService, TagRepo tagRepo) {
         this.postService = postService;
@@ -63,6 +64,7 @@ public class PostController {
 
     @GetMapping("/filterPost")
     public String searchByFilter(Model model){
+
         List<Post> allPosts = postService.getAllPosts();
 
         List<Tag> allTags = tagRepo.findAll();
@@ -79,7 +81,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/view")
-    public String viewPost(@PathVariable("postId") int id, Model model){
+    public String viewPost(@PathVariable("postId") Integer id, Model model){
         Post post = postService.findById(id);
         Comment comment = new Comment();
 
@@ -90,13 +92,13 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/delete")
-    public String deletePost(@PathVariable("postId") int id) {
+    public String deletePost(@PathVariable("postId") Integer id) {
         postService.deletById(id);
         return "redirect:/posts";
     }
 
     @GetMapping("/posts/{postId}/edit")
-    public String editPost(@PathVariable("postId") int id,Model model){
+    public String editPost(@PathVariable("postId") Integer id,Model model){
         Post post = postService.findById(id);
        StringBuilder tagValueWithComma = new StringBuilder();
 
@@ -114,7 +116,7 @@ public class PostController {
     }
 
     @PostMapping("/editPost/{postId}")
-    public String saveChangesOfPost(@PathVariable("postId") int id,
+    public String saveChangesOfPost(@PathVariable("postId") Integer id,
                                     @ModelAttribute("post") Post post,
                                     @RequestParam("tagName") String tagNames,
                                      Model model){
@@ -129,8 +131,8 @@ public class PostController {
     @GetMapping("/posts/search")
     public String searchPostWithPagination(
             @RequestParam(value = "query",required = false) String query,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "4") int size,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "4") Integer size,
             @RequestParam(name="tag",required = false)List<String> tagList,
             @RequestParam(name = "author",required = false)List<String> authorList,
             Model model) {
@@ -167,8 +169,8 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public String paginationWithSorting(Model model, @RequestParam(defaultValue = "0",required = false) int page,
-                            @RequestParam(defaultValue = "4",required = false) int pageSize,
+    public String paginationWithSorting(Model model, @RequestParam(defaultValue = "0",required = false) Integer page,
+                            @RequestParam(defaultValue = "4",required = false) Integer pageSize,
                             @RequestParam(defaultValue = "title",required = false) String sortField,
                             @RequestParam(defaultValue = "asc",required = false) String sortDir)
                             {

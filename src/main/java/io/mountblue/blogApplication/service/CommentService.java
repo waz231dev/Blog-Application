@@ -4,12 +4,14 @@ import io.mountblue.blogApplication.entity.Comment;
 
 public interface CommentService {
 
-    public void createComment(int id, Comment comment);
+    public void createComment(Integer id, Comment comment);
 
-    public void deleteComment(int commentId);
+    public void deleteComment(Integer commentId);
 
-    public Comment findById(int commentId);
+    public Comment findById(Integer commentId);
 
-    public void updateComment(int postId, int commentId, Comment comment);
+    public void updateComment(Integer postId, Integer commentId, Comment comment);
+
+    public void deleteById(Integer id);
 
 }

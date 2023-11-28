@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CommentController {
 
-    CommentService commentService;
-    PostService postService;
+    private CommentService commentService;
+    private PostService postService;
     @Autowired
     public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
@@ -26,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping("/{postId}/comment")
-    public String addCommentInPost(@PathVariable("postId") int id, @Valid @ModelAttribute("comments") Comment comment,
+    public String addCommentInPost(@PathVariable("postId") Integer id, @Valid @ModelAttribute("comments") Comment comment,
                                         BindingResult result, Model model){
 
         Post post = postService.findById(id);
@@ -41,7 +41,7 @@ public class CommentController {
     }
 
     @GetMapping("/comment/{postId}/{commentId}/edit")
-    public String editCommentForm(@PathVariable("postId")int postId, @PathVariable("commentId") int commentId,
+    public String editCommentForm(@PathVariable("postId") Integer postId, @PathVariable("commentId") Integer commentId,
                                   Model model){
 
         Post post = postService.findById(postId);
@@ -54,8 +54,8 @@ public class CommentController {
     }
 
     @PostMapping("/comment/{postId}/{commentId}")
-    public String editComment( @ModelAttribute("comments") Comment comment,@PathVariable("postId")int postId,
-                              @PathVariable("commentId") int commentId,Model model){
+    public String editComment( @ModelAttribute("comments") Comment comment,@PathVariable("postId") Integer postId,
+                              @PathVariable("commentId") Integer commentId,Model model){
 
         Post post = postService.findById(postId);
         commentService.updateComment(postId,commentId,comment);
@@ -65,7 +65,7 @@ public class CommentController {
     }
 
     @GetMapping("/comment/{postId}/{commentId}/delete")
-    public String deleteComment(@PathVariable("commentId") int commentId,@PathVariable("postId") int postId){
+    public String deleteComment(@PathVariable("commentId") Integer commentId,@PathVariable("postId") Integer postId){
 
         commentService.deleteComment(commentId);
         return "redirect:/posts/"+postId+"/view";

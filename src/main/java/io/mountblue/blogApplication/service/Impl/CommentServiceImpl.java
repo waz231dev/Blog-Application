@@ -11,29 +11,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    CommentRepo commentRepo;
-    PostRepo postRepo;
+    private CommentRepo commentRepo;
+    private PostRepo postRepo;
     @Autowired
     public CommentServiceImpl(CommentRepo commentRepo, PostRepo postRepo) {
         this.commentRepo = commentRepo;
         this.postRepo = postRepo;
     }
 
-    public void createComment(int id, Comment comment) {
+    public void createComment(Integer id, Comment comment) {
         Post post = postRepo.findById(id).get();
         comment.setPost(post);
         commentRepo.save(comment);
     }
-    public void deleteComment(int commentId){
+    public void deleteComment(Integer commentId){
 
         commentRepo.deleteById(commentId);
     }
-    public  Comment findById(int commentId){
+    public  Comment findById(Integer commentId){
 
         return commentRepo.findById(commentId).get();
     }
 
-    public void updateComment(int postId,int commentId,Comment comment){
+    public void updateComment(Integer postId,Integer commentId,Comment comment){
         Post post = postRepo.findById(postId).get();
         Comment oldComment = commentRepo.findById(commentId).get();
         Comment newComment = new Comment();
@@ -43,6 +43,12 @@ public class CommentServiceImpl implements CommentService {
         newComment.setEmail(oldComment.getEmail());
         newComment.setPost(post);
         commentRepo.save(newComment);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        commentRepo.deleteById(id);
+
     }
 
 }
