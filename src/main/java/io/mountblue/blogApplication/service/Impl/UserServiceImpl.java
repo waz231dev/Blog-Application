@@ -1,8 +1,7 @@
 package io.mountblue.blogApplication.service.Impl;
 
-import io.mountblue.blogApplication.entity.Role;
+
 import io.mountblue.blogApplication.entity.User;
-import io.mountblue.blogApplication.repository.RoleRepo;
 import io.mountblue.blogApplication.repository.UserRepo;
 import io.mountblue.blogApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,10 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
-
-    private RoleRepo roleRepo;
     private PasswordEncoder passwordEncoder;
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -33,12 +29,9 @@ public class UserServiceImpl implements UserService {
     public void saveUser(User user) {
         String password=passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
+        user.setRole("ROLE_AUTHOR");
         userRepo.save(user);
-        String userName=user.getUsername();
-        Role role = new Role();
-        role.setUserName(userName);
-        role.setName("ROLE_AUTHOR");
-        roleRepo.save(role);
+
     }
 
     @Override

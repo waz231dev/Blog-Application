@@ -26,21 +26,28 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import javax.sql.DataSource;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfiguration  {
 
-    @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        // define query to retrieve a user by username
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select username, password,isactive from users where username=?");
+//    @Bean
+//    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+//        // define query to retrieve a user by username
+//        jdbcUserDetailsManager.setUsersByUsernameQuery(
+//                "select username, password,isactive from users where username=?");
+//
+//        // define query to retrieve the authorities/roles by username
+//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+//                "select username, rolename from authorities where username=?");
+//
+//        return jdbcUserDetailsManager;
+//    }
+    private CustomUserDetails customUserDetails;
 
-        // define query to retrieve the authorities/roles by username
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "select username, rolename from authorities where username=?");
-
-        return jdbcUserDetailsManager;
+    public SecurityConfiguration(CustomUserDetails customUserDetails) {
+        this.customUserDetails = customUserDetails;
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
@@ -52,7 +59,7 @@ public class SecurityConfiguration  {
                                 .requestMatchers("/posts/search","/posts/{postId}/view","/filterPost").permitAll()
                                 .requestMatchers("/**").hasAnyRole("AUTHOR","ADMIN")
                                 .anyRequest().authenticated()
-                )
+                ).userDetailsService(customUserDetails)
                 .formLogin(form->
                         form
                                 .loginPage("/login")
@@ -70,6 +77,13 @@ public class SecurityConfiguration  {
         return http.build();
     }
 
+    @Bean
+    public DaoAuthenticationProvider getAuthenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(customUserDetails);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
