@@ -21,9 +21,9 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginPage(){
-
         return "login";
     }
+
     @GetMapping("/access-denied")
     public  String error(){
         return "error";
@@ -32,14 +32,15 @@ public class UserController {
     @GetMapping("/signup")
     public  String signupPage(Model model){
         model.addAttribute("user",new User());
+
         return "signup";
 
     }
+
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user){
-
           userService.saveUser(user);
+
         return "login";
     }
-
 }

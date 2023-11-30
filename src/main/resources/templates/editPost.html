@@ -60,9 +60,9 @@
     <form th:action="@{/editPost/{postId}(postId=${post.id})}" method="post"  th:object="${post}">
         <h1>Edit Post</h1>
 
-
+        <input type="hidden" name="postAuthor" th:value="*{author}"  ><br>
         <label for="user">Author :</label>
-        <input type="text" id="user" th:field="*{author}" required ><br>
+        <input type="text" id="user" th:field="*{author}"   disabled><br>
 
         <label for="tit">Title :</label>
         <input type="text" id="tit" th:field="*{title}" required ><br>

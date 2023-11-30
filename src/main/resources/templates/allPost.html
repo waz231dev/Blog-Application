@@ -64,7 +64,15 @@
     <span th:if="${#authorization.expression('isAuthenticated()')}">
 
     <form th:action = "@{/logout}" method="POST" >
-        <button value="Logout" class = "logout-button">Logout</button>
+        <button value="Logout" >Logout</button>
+    </form>
+
+    </span>
+
+    <span th:unless="${#authorization.expression('isAuthenticated()')}">
+
+    <form th:action = "@{/login}" method="POST" >
+        <button value="Login" >Login</button>
     </form>
 
     </span>
@@ -78,10 +86,6 @@
 <hr>
 
     <div class="flex1">
-
-<!--        <span th:if = "${#authorization.expression('hasRole(''ROLE_AUTHOR'')') ||-->
-<!--                #authorization.expression('hasRole(''ROLE_ADMIN'')')}">-->
-
 
         <span th:if="${#authorization.expression('isAuthenticated()')}">
         <a th:href="@{/newpost}" class="button-like">Create new post</a>
@@ -107,6 +111,7 @@
 
 <form action="/filterPost">
     <input type="submit" value="Filter">
+    <input type="hidden" name="name" th:value="${param.query}">
 </form>
 </div>
 

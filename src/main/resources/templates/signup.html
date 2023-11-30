@@ -67,8 +67,8 @@
 
     <form th:action="@{/saveUser}" method="post" th:object="${user}">
         <h1>SignUp Page</h1>
-        <label for="name1">Name:</label>
-        <input type="text" placeholder="Enter your name"  id="name1"  th:field="*{username}" ><br>
+        <label for="name1">UserName:</label>
+        <input type="text" placeholder="Enter your username"  id="name1"  th:field="*{username}" ><br>
         <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
         <label for="email">Email :</label>
         <input type="email" placeholder="Enter your email" id="email"  th:field="*{email}"  ><br>

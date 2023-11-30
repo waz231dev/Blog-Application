@@ -12,9 +12,9 @@ public interface PostService {
 
     public List<Post> getAllPosts();
 
-    public void deletById(Integer id);
+    public void deletById(Integer postId);
 
-    public Post findById(Integer id);
+    public Post findById(Integer postId);
 
     public void updatePost(Integer postId,String tagNames,Post post);
 

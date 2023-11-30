@@ -61,8 +61,8 @@
 
         <label for="user">Author :</label>
 
-        <input type="text"  id="user" th:field="*{author}" ><br>
-        <p th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>
+        <input type="text"  id="user" th:field="*{author}" disabled ><br>
+<!--        <p th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>-->
 
         <label for="tit">Title :</label>
         <input type="text" id="tit" th:field="*{title}" ><br>

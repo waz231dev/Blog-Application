@@ -25,7 +25,7 @@ public class Post {
     Integer id;
 
     @Column(name = "author")
-    @NotEmpty(message = "author name should not be empty")
+//    @NotEmpty(message = "author name should not be empty")
     String author;
 
     @NotEmpty(message = "title should not be empty")
@@ -54,11 +54,11 @@ public class Post {
     @UpdateTimestamp
     Date updatedAt;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
     List<Comment> commentList = new ArrayList<>();
 
-    @JsonIgnore
+
     @ManyToMany
     @JoinTable(
             name = "post_tags",

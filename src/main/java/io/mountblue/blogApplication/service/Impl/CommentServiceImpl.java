@@ -19,17 +19,17 @@ public class CommentServiceImpl implements CommentService {
         this.postRepo = postRepo;
     }
 
-    public void createComment(Integer id, Comment comment) {
-        Post post = postRepo.findById(id).get();
+    public void createComment(Integer postId, Comment comment) {
+        Post post = postRepo.findById(postId).get();
         comment.setPost(post);
         commentRepo.save(comment);
     }
-    public void deleteComment(Integer commentId){
 
+    public void deleteComment(Integer commentId){
         commentRepo.deleteById(commentId);
     }
-    public  Comment findById(Integer commentId){
 
+    public  Comment findById(Integer commentId){
         return commentRepo.findById(commentId).get();
     }
 
@@ -46,9 +46,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        commentRepo.deleteById(id);
-
+    public void deleteById(Integer commentId) {
+        commentRepo.deleteById(commentId);
     }
 
 }

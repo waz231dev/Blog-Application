@@ -1,5 +1,6 @@
 package io.mountblue.blogApplication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +37,7 @@ public class Tag {
     @UpdateTimestamp
     Date updatedAt;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     List<Post> posts = new ArrayList<>();
 

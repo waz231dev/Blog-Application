@@ -21,10 +21,10 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService {
 
-     private PostRepo postRepo;
+    private PostRepo postRepo;
     private TagRepo tagRepo;
 
-    UserService userService;
+    private UserService userService;
     @Autowired
     public PostServiceImpl(PostRepo postRepo, TagRepo tagRepo, UserService userService) {
         this.postRepo = postRepo;
@@ -48,12 +48,13 @@ public class PostServiceImpl implements PostService {
                  post.getTags().add(newTag);
             }
         }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUserName(username);
         post.setAuthor(username);
         post.setUser(user);
-       postRepo.save(post);
+        postRepo.save(post);
     }
 
     public List<Post> getAllPosts() {
@@ -62,12 +63,12 @@ public class PostServiceImpl implements PostService {
         return posts;
     }
 
-    public void deletById(Integer id) {
-       postRepo.deleteById(id);
+    public void deletById(Integer postId) {
+        postRepo.deleteById(postId);
     }
 
-    public Post findById(Integer id) {
-        Post post = postRepo.findById(id).get();
+    public Post findById(Integer postId) {
+        Post post = postRepo.findById(postId).get();
         return post;
     }
     public void updatePost(Integer postId,String tagNames,Post post){
@@ -88,10 +89,8 @@ public class PostServiceImpl implements PostService {
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        System.out.println(username);
         User user = userService.findByUserName(username);
 
-        post.setAuthor(username);
         post.setUser(user);
         post.setId(postId);
        postRepo.save(post);
@@ -128,5 +127,4 @@ public class PostServiceImpl implements PostService {
 
         return postRepo.findByTagNamesAndAuthors(tagList,authorList,pageable);
     }
-
 }

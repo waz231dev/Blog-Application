@@ -26,18 +26,18 @@ public class CommentController {
     }
 
     @PostMapping("/{postId}/comment")
-    public String addCommentInPost(@PathVariable("postId") Integer id, @Valid @ModelAttribute("comments") Comment comment,
+    public String addCommentInPost(@PathVariable("postId") Integer postId, @Valid @ModelAttribute("comments") Comment comment,
                                         BindingResult result, Model model){
 
-        Post post = postService.findById(id);
+        Post post = postService.findById(postId);
         if(result.hasErrors()){
             model.addAttribute("comments",comment);
             model.addAttribute("post",post);
             return "viewPost";
         }
-        commentService.createComment(id,comment);
+        commentService.createComment(postId,comment);
 
-        return "redirect:/posts/"+id+"/view";
+        return "redirect:/posts/"+postId+"/view";
     }
 
     @GetMapping("/comment/{postId}/{commentId}/edit")

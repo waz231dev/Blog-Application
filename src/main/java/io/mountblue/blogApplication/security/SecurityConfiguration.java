@@ -45,6 +45,7 @@ public class SecurityConfiguration  {
     private CustomUserDetails customUserDetails;
 
     public SecurityConfiguration(CustomUserDetails customUserDetails) {
+
         this.customUserDetails = customUserDetails;
     }
 
@@ -57,7 +58,10 @@ public class SecurityConfiguration  {
                         configurer
                                 .requestMatchers("/signup","/saveUser","/posts").permitAll()
                                 .requestMatchers("/posts/search","/posts/{postId}/view","/filterPost").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/posts/{id}",
+                                        "/api/posts/search","/api/posts/filter").permitAll()
                                 .requestMatchers("/**").hasAnyRole("AUTHOR","ADMIN")
+
                                 .anyRequest().authenticated()
                 ).userDetailsService(customUserDetails)
                 .formLogin(form->

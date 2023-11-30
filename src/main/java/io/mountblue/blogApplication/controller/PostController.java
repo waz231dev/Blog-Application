@@ -35,7 +35,6 @@ public class PostController {
     }
 
 
-
     @GetMapping("/newpost")
     public String newPost(Model model, @AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();
@@ -48,14 +47,15 @@ public class PostController {
 
     @PostMapping("/savePost")
     public String createPost(@RequestParam("tagName") String tagNames,
-                                       @Valid @ModelAttribute("post") Post post, BindingResult result, Model model) {
+                             @Valid @ModelAttribute("post") Post post, BindingResult result,
+                             Model model) {
         if(result.hasErrors()){
             model.addAttribute("post",post);
             model.addAttribute("tag",tagNames);
             return "createPost";
         }
-        else{
 
+        else{
             postService.createPost(tagNames,post);
 
             return "redirect:/posts";
@@ -63,7 +63,7 @@ public class PostController {
     }
 
     @GetMapping("/filterPost")
-    public String searchByFilter(Model model){
+    public String searchByFilter(Model model,@RequestParam("name") String name){
 
         List<Post> allPosts = postService.getAllPosts();
 
@@ -72,7 +72,7 @@ public class PostController {
         for(Post post : allPosts){
             author.add(post.getAuthor());
         }
-
+        model.addAttribute("name",name);
         model.addAttribute("post",allPosts);
         model.addAttribute("allAuthor",author);
         model.addAttribute("tags",allTags);
@@ -81,8 +81,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/view")
-    public String viewPost(@PathVariable("postId") Integer id, Model model){
-        Post post = postService.findById(id);
+    public String viewPost(@PathVariable("postId") Integer postId, Model model){
+        Post post = postService.findById(postId);
         Comment comment = new Comment();
 
         model.addAttribute("post",post);
@@ -92,51 +92,58 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/delete")
-    public String deletePost(@PathVariable("postId") Integer id) {
-        postService.deletById(id);
+    public String deletePost(@PathVariable("postId") Integer postId) {
+        postService.deletById(postId);
         return "redirect:/posts";
     }
 
     @GetMapping("/posts/{postId}/edit")
-    public String editPost(@PathVariable("postId") Integer id,Model model){
-        Post post = postService.findById(id);
-       StringBuilder tagValueWithComma = new StringBuilder();
+    public String editPost(@PathVariable("postId") Integer postId,Model model,
+                           @AuthenticationPrincipal UserDetails userDetails) {
+        Post post = postService.findById(postId);
+        if (userDetails.getUsername().equals(post.getAuthor()) || userDetails.getAuthorities().toString().contains("ROLE_ADMIN")) {
+            StringBuilder tagValueWithComma = new StringBuilder();
 
-       for(Tag tag :post.getTags()){
-           tagValueWithComma.append(tag.getName());
-           tagValueWithComma.append(",");
-       }
-     if(tagValueWithComma.length()>0) {
-         tagValueWithComma.deleteCharAt(tagValueWithComma.length() - 1);
-     }
+            for (Tag tag : post.getTags()) {
+                tagValueWithComma.append(tag.getName());
+                tagValueWithComma.append(",");
+            }
+            if (tagValueWithComma.length() > 0) {
+                tagValueWithComma.deleteCharAt(tagValueWithComma.length() - 1);
+            }
 
-       model.addAttribute("tagValue",tagValueWithComma.toString());
-       model.addAttribute("post",post);
-        return "editPost";
+            model.addAttribute("tagValue", tagValueWithComma.toString());
+            model.addAttribute("post", post);
+
+            return "editPost";
+        } else {
+            return "error";
+        }
     }
-
     @PostMapping("/editPost/{postId}")
-    public String saveChangesOfPost(@PathVariable("postId") Integer id,
+    public String saveChangesOfPost(@PathVariable("postId") Integer postId,
                                     @ModelAttribute("post") Post post,
+                                    @RequestParam("postAuthor") String author,
                                     @RequestParam("tagName") String tagNames,
-                                     Model model){
+                                     Model model) {
 
-
-            postService.updatePost(id,tagNames,post);
-            return "redirect:/posts/"+id+"/view";
+            Post posts = postService.findById(postId);
+            post.setAuthor(author);
+            postService.updatePost(postId, tagNames, post);
+            return "redirect:/posts/" + postId + "/view";
         }
 
 
 
     @GetMapping("/posts/search")
     public String searchPostWithPagination(
-            @RequestParam(value = "query",required = false) String query,
+            @RequestParam(name = "query",required = false) String query,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "4") Integer size,
             @RequestParam(name="tag",required = false)List<String> tagList,
             @RequestParam(name = "author",required = false)List<String> authorList,
             Model model) {
-
+        System.out.println(query);
         if(tagList == null){
             tagList= Collections.emptyList();
         }
@@ -145,13 +152,20 @@ public class PostController {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Post> posts;
-        if(query!=null && !query.isEmpty()) {
+        Page<Post> posts ;
+        if (query != null && !query.isEmpty() && (tagList != null && !tagList.isEmpty() ||
+                authorList != null && !authorList.isEmpty())){
             posts = postService.searchByAuthorOrExcerptOrTitleOrContentOrTag(query, pageable);
+            posts = postService.fiterByTagsAndAuthor(tagList,authorList,pageable);
         }
         else{
-            posts = postService.fiterByTagsAndAuthor(tagList,authorList,pageable);
-            query="";
+            if(query != null && !query.isEmpty()) {
+                posts = postService.searchByAuthorOrExcerptOrTitleOrContentOrTag(query, pageable);
+            }else{
+                posts = postService.fiterByTagsAndAuthor(tagList,authorList,pageable);
+            }
+
+
         }
 
         String authors=String.join("&author=",authorList);
